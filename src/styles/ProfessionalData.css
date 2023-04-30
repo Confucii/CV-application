@@ -17,6 +17,10 @@
   font-size: 1.5rem;
 }
 
+:is(.Professional-Data-form, .Professional-Data-txt) button {
+  justify-self: center;
+}
+
 :is(.Professional-Data-form, .Professional-Data-txt) + :is(form, div) {
   padding-top: 10px;
   border-top: 1px solid black;

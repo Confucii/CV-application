@@ -17,6 +17,10 @@
   font-size: 1.5rem;
 }
 
+:is(.Educational-Data-form, .Educational-Data-txt) button {
+  justify-self: center;
+}
+
 :is(.Educational-Data-form, .Educational-Data-txt) + :is(form, div) {
   padding-top: 10px;
   border-top: 1px solid black;
