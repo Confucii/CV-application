@@ -16,15 +16,13 @@ export default class EducationalData extends React.Component {
     this.deleteData = this.deleteData.bind(this);
   }
 
-  preventClick(e) {
-    e.preventDefault();
-    e.target.parentElement.submit();
-  }
-
-  saveData(e) {
-    e.preventDefault();
+  checkValidity(e) {
     const formRef = e.target.parentElement;
-    if (
+    formRef.querySelector("#from-date").setCustomValidity("");
+    if (!formRef.checkValidity()) {
+      formRef.reportValidity();
+      return;
+    } else if (
       new Date(formRef.querySelector("#from-date").value).getTime() >
       new Date(formRef.querySelector("#to-date").value).getTime()
     ) {
@@ -34,25 +32,28 @@ export default class EducationalData extends React.Component {
       formRef.querySelector("#from-date").reportValidity();
       return;
     } else {
-      formRef.querySelector("#from-date").setCustomValidity("");
-      this.setState((state) => {
-        return {
-          educationalInfo: state.educationalInfo.map((info) => {
-            if (info.id === formRef.dataset.id) {
-              return {
-                editable: false,
-                schoolTitle: formRef.querySelector("#school-title").value,
-                studyTitle: formRef.querySelector("#study-title").value,
-                fromDate: formRef.querySelector("#from-date").value,
-                toDate: formRef.querySelector("#to-date").value,
-                id: info.id,
-              };
-            }
-            return info;
-          }),
-        };
-      });
+      formRef.dispatchEvent(new Event("submit", { bubbles: true }));
     }
+  }
+
+  saveData(e) {
+    this.setState((state) => {
+      return {
+        educationalInfo: state.educationalInfo.map((info) => {
+          if (info.id === e.target.dataset.id) {
+            return {
+              editable: false,
+              schoolTitle: e.target.querySelector("#school-title").value,
+              studyTitle: e.target.querySelector("#study-title").value,
+              fromDate: e.target.querySelector("#from-date").value,
+              toDate: e.target.querySelector("#to-date").value,
+              id: info.id,
+            };
+          }
+          return info;
+        }),
+      };
+    });
   }
 
   deleteData(e) {
@@ -140,7 +141,7 @@ export default class EducationalData extends React.Component {
                   placeholder="To"
                   defaultValue={eduInfo.toDate}
                 />
-                <button onClick={this.saveData}>Save</button>
+                <button onClick={this.checkValidity}>Save</button>
                 <button type="button" onClick={this.deleteData}>
                   Delete
                 </button>
