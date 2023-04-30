@@ -3,6 +3,7 @@ import "../styles/App.css";
 import Header from "./Header";
 import PersonalData from "./PersonalData";
 import EducationalData from "./EducationalData";
+import ProfessionalData from "./ProfessionalData";
 
 export default class App extends React.Component {
   render() {
@@ -11,6 +12,7 @@ export default class App extends React.Component {
         <Header />
         <PersonalData />
         <EducationalData />
+        <ProfessionalData />
       </div>
     );
   }
