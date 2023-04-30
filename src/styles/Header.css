@@ -2,4 +2,6 @@
   font-size: 2rem;
   padding: 15px;
   background-color: bisque;
+  border: 2px dashed salmon;
+  border-radius: 10px;
 }

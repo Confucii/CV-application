@@ -1,7 +1,6 @@
 .Personal-Data-form {
   display: grid;
-  width: fit-content;
-  padding: 20px;
+  padding: 10px 50px;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 30px;
   row-gap: 10px;
@@ -9,16 +8,44 @@
 }
 
 .Personal-Data-txt {
-  display: flex;
+  display: grid;
+  padding: 10px;
+  row-gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
   font-size: 1.5rem;
+  background-color: lightyellow;
+  border: 2px dashed salmon;
 }
 
-form button {
-  font-size: 1.3rem;
-  width: 30%;
+.Personal-Data-txt button,
+.Personal-Data-txt h1,
+.Personal-Data-form button,
+.Personal-Data-form h1 {
+  justify-self: center;
+  grid-column: 1/3;
+}
+
+.Personal-Data-txt h1 {
+  font-size: 2rem;
+}
+
+button {
+  font-size: 2rem;
+  background-color: lightblue;
+  border: 1px dashed black;
+  border-radius: 10px;
+  width: 200px;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
 }
 
 form {
+  background-color: lightyellow;
+  border: 2px dashed salmon;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
