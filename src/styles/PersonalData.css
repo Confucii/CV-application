@@ -1,0 +1,25 @@
+.Personal-Data-form {
+  display: grid;
+  width: fit-content;
+  padding: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 30px;
+  row-gap: 10px;
+  justify-content: space-around;
+}
+
+.Personal-Data-txt {
+  display: flex;
+  font-size: 1.5rem;
+}
+
+form button {
+  font-size: 1.3rem;
+  width: 30%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
