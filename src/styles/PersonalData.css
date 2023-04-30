@@ -5,6 +5,8 @@
   column-gap: 30px;
   row-gap: 10px;
   justify-content: space-around;
+  background-color: lightyellow;
+  border: 2px dashed salmon;
 }
 
 .Personal-Data-txt {
@@ -27,26 +29,4 @@
 
 .Personal-Data-txt h1 {
   font-size: 2rem;
-}
-
-button {
-  font-size: 2rem;
-  background-color: lightblue;
-  border: 1px dashed black;
-  border-radius: 10px;
-  width: 200px;
-  transition: all 0.3s ease-in-out;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-
-form {
-  background-color: lightyellow;
-  border: 2px dashed salmon;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }

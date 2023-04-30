@@ -1,0 +1,28 @@
+.Educational-Data {
+  padding: 10px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border: 2px dashed coral;
+  background-color: lightgoldenrodyellow;
+  align-items: center;
+}
+
+.Educational-Data-form,
+.Educational-Data-txt {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 30px;
+  row-gap: 10px;
+  font-size: 1.5rem;
+}
+
+:is(.Educational-Data-form, .Educational-Data-txt) + :is(form, div) {
+  padding-top: 10px;
+  border-top: 1px solid black;
+}
+
+.study-title,
+.school-title {
+  grid-column: 1/3;
+}
