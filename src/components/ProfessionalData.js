@@ -14,6 +14,7 @@ export default class ProfessionalData extends React.Component {
     this.saveData = this.saveData.bind(this);
     this.editData = this.editData.bind(this);
     this.deleteData = this.deleteData.bind(this);
+    this.ongoingHandler = this.ongoingHandler.bind(this);
   }
 
   checkValidity(e) {
@@ -23,8 +24,9 @@ export default class ProfessionalData extends React.Component {
       formRef.reportValidity();
       return;
     } else if (
+      !formRef.querySelector("#to-date").disabled &&
       new Date(formRef.querySelector("#from-date").value).getTime() >
-      new Date(formRef.querySelector("#to-date").value).getTime()
+        new Date(formRef.querySelector("#to-date").value).getTime()
     ) {
       formRef
         .querySelector("#from-date")
@@ -36,6 +38,29 @@ export default class ProfessionalData extends React.Component {
     }
   }
 
+  ongoingHandler(e) {
+    const elemRef = e.target.parentElement.parentElement;
+    this.setState((state) => {
+      return {
+        professionalInfo: state.professionalInfo.map((info) => {
+          if (info.id === elemRef.dataset.id) {
+            return {
+              editable: info.editable,
+              ongoing: e.target.checked,
+              companyTitle: info.companyTitle,
+              positionTitle: info.positionTitle,
+              jobDescription: info.jobDescription,
+              fromDate: info.fromDate,
+              toDate: info.toDate,
+              id: info.id,
+            };
+          }
+          return info;
+        }),
+      };
+    });
+  }
+
   saveData(e) {
     this.setState((state) => {
       return {
@@ -43,6 +68,7 @@ export default class ProfessionalData extends React.Component {
           if (info.id === e.target.dataset.id) {
             return {
               editable: false,
+              ongoing: info.ongoing,
               companyTitle: e.target.querySelector("#company-title").value,
               positionTitle: e.target.querySelector("#position-title").value,
               jobDescription: e.target.querySelector("#job-description").value,
@@ -74,6 +100,7 @@ export default class ProfessionalData extends React.Component {
           if (info.id === e.target.parentElement.dataset.id) {
             return {
               editable: true,
+              ongoing: info.ongoing,
               companyTitle: info.companyTitle,
               positionTitle: info.positionTitle,
               jobDescription: info.jobDescription,
@@ -95,6 +122,7 @@ export default class ProfessionalData extends React.Component {
           ...state.professionalInfo,
           {
             editable: true,
+            ongoing: false,
             companyTitle: "",
             positionTitle: "",
             jobDescription: "",
@@ -150,12 +178,28 @@ export default class ProfessionalData extends React.Component {
                   placeholder="From"
                   defaultValue={profInfo.fromDate}
                 />
-                <Input
-                  type="date"
-                  id="to-date"
-                  placeholder="To"
-                  defaultValue={profInfo.toDate}
-                />
+                <div className="ongoing">
+                  <div className={`Input to-date`}>
+                    <label htmlFor="to-date">To:</label>
+                    <input
+                      type="date"
+                      name="to-date"
+                      id="to-date"
+                      placeholder="To"
+                      defaultValue={profInfo.toDate}
+                      disabled={profInfo.ongoing}
+                      required
+                    />
+                  </div>
+                  Ongoing:
+                  <input
+                    type="checkbox"
+                    name="ongoing"
+                    id="ongoing"
+                    checked={profInfo.ongoing}
+                    onChange={this.ongoingHandler}
+                  />
+                </div>
                 <button onClick={this.checkValidity}>Save</button>
                 <button type="button" onClick={this.deleteData}>
                   Delete
@@ -179,7 +223,12 @@ export default class ProfessionalData extends React.Component {
                   Job description: {profInfo.jobDescription}
                 </p>
                 <p>From: {format(new Date(profInfo.fromDate), "MM/dd/yyyy")}</p>
-                <p>To: {format(new Date(profInfo.toDate), "MM/dd/yyyy")}</p>
+                <p>
+                  To:{" "}
+                  {profInfo.ongoing
+                    ? "Ongoing"
+                    : format(new Date(profInfo.toDate), "MM/dd/yyyy")}
+                </p>
                 <button type="button" onClick={this.editData}>
                   Edit
                 </button>
