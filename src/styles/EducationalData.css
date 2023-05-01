@@ -30,3 +30,8 @@
 .school-title {
   grid-column: 1/3;
 }
+
+#ongoing {
+  transform: scale(1.4);
+  margin-left: 5px;
+}

@@ -14,6 +14,7 @@ export default class EducationalData extends React.Component {
     this.saveData = this.saveData.bind(this);
     this.editData = this.editData.bind(this);
     this.deleteData = this.deleteData.bind(this);
+    this.ongoingHandler = this.ongoingHandler.bind(this);
   }
 
   checkValidity(e) {
@@ -23,8 +24,9 @@ export default class EducationalData extends React.Component {
       formRef.reportValidity();
       return;
     } else if (
+      !formRef.querySelector("#to-date").disabled &&
       new Date(formRef.querySelector("#from-date").value).getTime() >
-      new Date(formRef.querySelector("#to-date").value).getTime()
+        new Date(formRef.querySelector("#to-date").value).getTime()
     ) {
       formRef
         .querySelector("#from-date")
@@ -36,6 +38,28 @@ export default class EducationalData extends React.Component {
     }
   }
 
+  ongoingHandler(e) {
+    const elemRef = e.target.parentElement.parentElement;
+    this.setState((state) => {
+      return {
+        educationalInfo: state.educationalInfo.map((info) => {
+          if (info.id === elemRef.dataset.id) {
+            return {
+              editable: info.editable,
+              ongoing: e.target.checked,
+              schoolTitle: info.schoolTitle,
+              studyTitle: info.studyTitle,
+              fromDate: info.fromDate,
+              toDate: info.toDate,
+              id: info.id,
+            };
+          }
+          return info;
+        }),
+      };
+    });
+  }
+
   saveData(e) {
     this.setState((state) => {
       return {
@@ -43,6 +67,7 @@ export default class EducationalData extends React.Component {
           if (info.id === e.target.dataset.id) {
             return {
               editable: false,
+              ongoing: info.ongoing,
               schoolTitle: e.target.querySelector("#school-title").value,
               studyTitle: e.target.querySelector("#study-title").value,
               fromDate: e.target.querySelector("#from-date").value,
@@ -73,6 +98,7 @@ export default class EducationalData extends React.Component {
           if (info.id === e.target.parentElement.dataset.id) {
             return {
               editable: true,
+              ongoing: info.ongoing,
               schoolTitle: info.schoolTitle,
               studyTitle: info.studyTitle,
               fromDate: info.fromDate,
@@ -93,6 +119,7 @@ export default class EducationalData extends React.Component {
           ...state.educationalInfo,
           {
             editable: true,
+            ongoing: false,
             schoolTitle: "",
             studyTitle: "",
             fromDate: "",
@@ -135,12 +162,28 @@ export default class EducationalData extends React.Component {
                   placeholder="From"
                   defaultValue={eduInfo.fromDate}
                 />
-                <Input
-                  type="date"
-                  id="to-date"
-                  placeholder="To"
-                  defaultValue={eduInfo.toDate}
-                />
+                <div className="ongoing">
+                  <div className={`Input to-date`}>
+                    <label htmlFor="to-date">To:</label>
+                    <input
+                      type="date"
+                      name="to-date"
+                      id="to-date"
+                      placeholder="To"
+                      defaultValue={eduInfo.toDate}
+                      disabled={eduInfo.ongoing}
+                      required
+                    />
+                  </div>
+                  Ongoing:
+                  <input
+                    type="checkbox"
+                    name="ongoing"
+                    id="ongoing"
+                    checked={eduInfo.ongoing}
+                    onChange={this.ongoingHandler}
+                  />
+                </div>
                 <button onClick={this.checkValidity}>Save</button>
                 <button type="button" onClick={this.deleteData}>
                   Delete
@@ -161,7 +204,12 @@ export default class EducationalData extends React.Component {
                   Program title: {eduInfo.studyTitle}
                 </p>
                 <p>From: {format(new Date(eduInfo.fromDate), "MM/dd/yyyy")}</p>
-                <p>To: {format(new Date(eduInfo.toDate), "MM/dd/yyyy")}</p>
+                <p>
+                  To:{" "}
+                  {eduInfo.ongoing
+                    ? "Ongoing"
+                    : format(new Date(eduInfo.toDate), "MM/dd/yyyy")}
+                </p>
                 <button type="button" onClick={this.editData}>
                   Edit
                 </button>
