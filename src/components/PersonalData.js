@@ -1,85 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "./Input";
 import "../styles/PersonalData.css";
 
-export default class PersonalData extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editable: true,
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-    };
-    this.saveData = this.saveData.bind(this);
-    this.editData = this.editData.bind(this);
-  }
+export default function PersonalData() {
+  const [state, setPersonalData] = useState({
+    editable: true,
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  });
 
-  saveData(e) {
+  function saveData(e) {
     e.preventDefault();
-    this.setState(() => {
-      return {
-        editable: false,
-        firstName: document.querySelector("#first-name").value,
-        lastName: document.querySelector("#last-name").value,
-        email: document.querySelector("#email").value,
-        phone: document.querySelector("#phone").value,
-      };
+    setPersonalData({
+      editable: false,
+      firstName: document.querySelector("#first-name").value,
+      lastName: document.querySelector("#last-name").value,
+      email: document.querySelector("#email").value,
+      phone: document.querySelector("#phone").value,
     });
   }
 
-  editData() {
-    this.setState({
+  function editData() {
+    setPersonalData({
       editable: true,
+      firstName: document.querySelector("#first-name").value,
+      lastName: document.querySelector("#last-name").value,
+      email: document.querySelector("#email").value,
+      phone: document.querySelector("#phone").value,
     });
   }
-
-  render() {
-    if (this.state.editable) {
-      return (
-        <form onSubmit={this.saveData} className="Personal-Data-form">
-          <h1>General info</h1>
-          <Input
-            type="text"
-            id="first-name"
-            placeholder="First name"
-            defaultValue={this.state.firstName}
-          />
-          <Input
-            type="text"
-            id="last-name"
-            placeholder="Last name"
-            defaultValue={this.state.lastName}
-          />
-          <Input
-            type="email"
-            id="email"
-            placeholder="Email"
-            defaultValue={this.state.email}
-          />
-          <Input
-            type="tel"
-            id="phone"
-            placeholder="Phone"
-            defaultValue={this.state.phone}
-          />
-          <button>Save</button>
-        </form>
-      );
-    } else {
-      return (
-        <div className="Personal-Data-txt">
-          <h1>General info</h1>
-          <p>First name: {this.state.firstName}</p>
-          <p>Last name: {this.state.lastName}</p>
-          <p>Email: {this.state.email}</p>
-          <p>Phone: {this.state.phone}</p>
-          <button type="button" onClick={this.editData}>
-            Edit
-          </button>
-        </div>
-      );
-    }
+  if (state.editable) {
+    return (
+      <form onSubmit={saveData} className="Personal-Data-form">
+        <h1>General info</h1>
+        <Input
+          type="text"
+          id="first-name"
+          placeholder="First name"
+          defaultValue={state.firstName}
+        />
+        <Input
+          type="text"
+          id="last-name"
+          placeholder="Last name"
+          defaultValue={state.lastName}
+        />
+        <Input
+          type="email"
+          id="email"
+          placeholder="Email"
+          defaultValue={state.email}
+        />
+        <Input
+          type="tel"
+          id="phone"
+          placeholder="Phone"
+          defaultValue={state.phone}
+        />
+        <button>Save</button>
+      </form>
+    );
+  } else {
+    return (
+      <div className="Personal-Data-txt">
+        <h1>General info</h1>
+        <p>First name: {state.firstName}</p>
+        <p>Last name: {state.lastName}</p>
+        <p>Email: {state.email}</p>
+        <p>Phone: {state.phone}</p>
+        <button type="button" onClick={editData}>
+          Edit
+        </button>
+      </div>
+    );
   }
 }
